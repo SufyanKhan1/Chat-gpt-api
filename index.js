@@ -71,6 +71,11 @@ app.post("/post", async (req, res) => {
     res.status(500).send("Internal server error");
   }
 });
+app.get("/messages", async (req, res) => {
+  const snapshot = await User.get();
+  const list = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  res.send(list);
+});
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Something broke!");
